@@ -13,9 +13,9 @@ python main.py --help
 ```
 You can run the utility with the following command:
 ```sh
-python main.py
+python main.py first_branch second_branch
 ```
 You can also run the utility and save the result to a .json file with the following command:
 ```sh
-python main.py -p path_to_file
+python main.py first_branch second_branch -p path_to_file
 ```

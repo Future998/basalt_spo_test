@@ -71,22 +71,22 @@ def get_branch_binary_packages(branch: str) -> dict:
     r = requests.get(url)
     return r.json()
 
-def get_rez() -> dict: 
-    sisyphus_packages = get_branch_binary_packages(branch='sisyphus')
-    p10_packages = get_branch_binary_packages(branch='p10')
+def get_rez(first_branch: str, second_branch: str) -> dict: 
+    fb_packages = get_branch_binary_packages(branch=first_branch)
+    sb_packages = get_branch_binary_packages(branch=second_branch)
     all_pkgs = {
-        'sisyphus': generate_branch(sisyphus_packages['packages']),
-        'p10': generate_branch(p10_packages['packages'])
+        first_branch: generate_branch(fb_packages['packages']),
+        second_branch: generate_branch(sb_packages['packages'])
         }
     result = {
-        'inP10NotInSisyphus': comparison_packages(\
-            first_branch=all_pkgs['p10'],\
-            sec_branch=all_pkgs['sisyphus']),
-        'inSisyphusNotInP10': comparison_packages(\
-            first_branch=all_pkgs['sisyphus'],\
-            sec_branch=all_pkgs['p10']),
-        'versionMoreInSisyphusThanInP10': find_latest_version(\
-            first_branch=all_pkgs['sisyphus'],\
-            sec_branch=all_pkgs['p10']),
+        f'in{second_branch.title()}NotIn{first_branch.title()}': comparison_packages(\
+            first_branch=all_pkgs[second_branch],\
+            sec_branch=all_pkgs[first_branch]),
+        f'in{first_branch.title()}NotIn{second_branch.title()}': comparison_packages(\
+            first_branch=all_pkgs[first_branch],\
+            sec_branch=all_pkgs[second_branch]),
+        f'versionMoreIn{first_branch.title()}ThanIn{second_branch.title()}': find_latest_version(\
+            first_branch=all_pkgs[first_branch],\
+            sec_branch=all_pkgs[second_branch]),
     }  
     return result
